@@ -1,5 +1,6 @@
 import argparse
 import pandas as pd
+import re
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f','--filename')
@@ -8,7 +9,7 @@ parser.add_argument('-o2','--output2')
 parser.add_argument('-wR','--wantedRows', type=int)
 args = parser.parse_args()
 
-with open(args.filename,'r') as csv_file, open(args.output1, 'w') as bankdata1,open(args.output2, "w") as bankdata2:
+with open(args.filename,'r') as csv_file, open(args.output1, "w+") as bankdata1,open(args.output2, "w+") as bankdata2:
     df = pd.read_csv(csv_file)
     listOfDfOne = [2]
     listOfDfZero = [2]
@@ -32,9 +33,5 @@ with open(args.filename,'r') as csv_file, open(args.output1, 'w') as bankdata1,o
     trainingData = valuesWithOnePartI.append(valuesWithZeroPartI)
     testData = valuesWithOnePartII.append(valuesWithZeroPartII)
 
-    trainingData.to_csv(bankdata1, index=False)
-    testData.to_csv(bankdata2, index=False)
-    
-
-    
-          
+    trainingData.to_csv(bankdata1, index=False, line_terminator='\n')
+    testData.to_csv(bankdata2, index=False, line_terminator='\n')
