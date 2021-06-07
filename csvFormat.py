@@ -1,6 +1,5 @@
 import argparse
 import pandas as pd
-import re
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f','--filename')
@@ -24,13 +23,11 @@ with open(args.filename,'r') as csv_file, open(args.output1, "w+") as bankdata1,
     #print(f"length one: {len(valuesWithOne)}")
     #print(f"length zero: {len(valuesWithZero)}")
 
-    split = int(percentageOne * (2 * wantedRows / 3))
-    valuesWithOnePartI = valuesWithOne.iloc[:split, :]
-    valuesWithOnePartII = valuesWithOne.iloc[split: wantedRows, :]
+    valuesWithOnePartI = valuesWithOne.sample(int(percentageOne * ((wantedRows * 2) / 3)))
+    valuesWithOnePartII = valuesWithOne.sample(int(percentageOne * (wantedRows / 3)))
 
-    split = int(percentageZero * (2 * wantedRows / 3))
-    valuesWithZeroPartI = valuesWithZero.iloc[:split, :]
-    valuesWithZeroPartII = valuesWithZero.iloc[split : wantedRows,:]
+    valuesWithZeroPartI = valuesWithZero.sample(int(percentageZero * ((wantedRows * 2) / 3)))
+    valuesWithZeroPartII = valuesWithZero.sample(int(percentageZero * (wantedRows / 3)))
 
     trainingData = valuesWithOnePartI.append(valuesWithZeroPartI)
     testData = valuesWithOnePartII.append(valuesWithZeroPartII)
