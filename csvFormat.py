@@ -24,11 +24,13 @@ with open(args.filename,'r') as csv_file, open(args.output1, "w+") as bankdata1,
     #print(f"length one: {len(valuesWithOne)}")
     #print(f"length zero: {len(valuesWithZero)}")
 
-    valuesWithOnePartI = valuesWithOne.iloc[:int(percentageOne * (2 * wantedRows / 3)), :]
-    valuesWithOnePartII = valuesWithOne.iloc[int(percentageOne *  (wantedRows / 3)) : wantedRows,:]
+    split = int(percentageOne * (2 * wantedRows / 3))
+    valuesWithOnePartI = valuesWithOne.iloc[:split, :]
+    valuesWithOnePartII = valuesWithOne.iloc[split: wantedRows, :]
 
-    valuesWithZeroPartI = valuesWithZero.iloc[:int(percentageZero * (2 * wantedRows / 3)),:]
-    valuesWithZeroPartII = valuesWithZero.iloc[int(percentageZero * (wantedRows / 3)) : wantedRows,:]
+    split = int(percentageZero * (2 * wantedRows / 3))
+    valuesWithZeroPartI = valuesWithZero.iloc[:split, :]
+    valuesWithZeroPartII = valuesWithZero.iloc[split : wantedRows,:]
 
     trainingData = valuesWithOnePartI.append(valuesWithZeroPartI)
     testData = valuesWithOnePartII.append(valuesWithZeroPartII)
