@@ -5,6 +5,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-f','--filename')
 parser.add_argument('-o1','--output1')
 parser.add_argument('-o2','--output2')
+parser.add_argument('-wR','--wantedRows', type=int)
 args = parser.parse_args()
 
 with open(args.filename,'r') as csv_file, open(args.output1, 'w') as bankdata1,open(args.output2, "w") as bankdata2:
@@ -15,7 +16,7 @@ with open(args.filename,'r') as csv_file, open(args.output1, 'w') as bankdata1,o
     valuesWithOne = df.loc[df["9"] == 1.0]
     valuesWithZero = df.loc[df["9"] == 0.0]
 
-    wantedRows = 100000
+    wantedRows = args.wantedRows
     percentageOne = len(valuesWithOne) / (len(valuesWithZero) + len(valuesWithOne))
     percentageZero = 1 - percentageOne
 
