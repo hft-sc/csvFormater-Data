@@ -1,6 +1,5 @@
 import argparse
 import pandas as pd
-from functools import reduce
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f','--filename')
@@ -16,14 +15,18 @@ with open(args.filename,'r') as csv_file, open(args.output1, 'w') as bankdata1,o
     valuesWithOne = df.loc[df["9"] == 1.0]
     valuesWithZero = df.loc[df["9"] == 0.0]
 
+    wantedRows = 100000
+    percentageOne = len(valuesWithOne) / (len(valuesWithZero) + len(valuesWithOne))
+    percentageZero = 1 - percentageOne
+
     #print(f"length one: {len(valuesWithOne)}")
     #print(f"length zero: {len(valuesWithZero)}")
 
-    valuesWithOnePartI = valuesWithOne.iloc[:int(len(valuesWithOne) / 2),:]
-    valuesWithOnePartII = valuesWithOne.iloc[int(len(valuesWithOne) / 2) :,:]
+    valuesWithOnePartI = valuesWithOne.iloc[:int(percentageOne * (2 * wantedRows / 3)), :]
+    valuesWithOnePartII = valuesWithOne.iloc[int(percentageOne *  (wantedRows / 3)) : wantedRows,:]
 
-    valuesWithZeroPartI = valuesWithZero.iloc[:int(len(valuesWithZero) / 2),:]
-    valuesWithZeroPartII = valuesWithZero.iloc[int(len(valuesWithZero) / 2) :,:]
+    valuesWithZeroPartI = valuesWithZero.iloc[:int(percentageZero * (2 * wantedRows / 3)),:]
+    valuesWithZeroPartII = valuesWithZero.iloc[int(percentageZero * (wantedRows / 3)) : wantedRows,:]
 
     trainingData = valuesWithOnePartI.append(valuesWithZeroPartI)
     testData = valuesWithOnePartII.append(valuesWithZeroPartII)
