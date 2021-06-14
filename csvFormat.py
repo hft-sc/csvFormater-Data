@@ -17,6 +17,8 @@ with open(args.filename,'r') as csv_file, open(args.output1, "w+") as bankdata1,
     valuesWithZero = df.loc[df["9"] == 0.0]
 
     wantedRows = args.wantedRows
+    if wantedRows == -1:
+        wantedRows = len(df)
     percentageOne = len(valuesWithOne) / (len(valuesWithZero) + len(valuesWithOne))
     percentageZero = 1 - percentageOne
 
