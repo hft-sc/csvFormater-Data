@@ -34,5 +34,8 @@ with open(args.filename,'r') as csv_file, open(args.output1, "w+") as bankdata1,
     trainingData = valuesWithOnePartI.append(valuesWithZeroPartI)
     testData = valuesWithOnePartII.append(valuesWithZeroPartII)
 
+    trainingData = trainingData.sample(frac = 1)
+    testData = testData.sample(frac = 1)
+
     trainingData.to_csv(bankdata1, index=False, line_terminator='\n')
     testData.to_csv(bankdata2, index=False, line_terminator='\n')
